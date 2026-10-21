@@ -6,7 +6,7 @@ The search discovers sellers through Shopify's Global Catalog, verifies each sel
 
 ## Install a release
 
-Download `shopify-product-search-0.1.0.tgz` and `SHA256SUMS` from the same versioned GitHub Release. Select the attached `.tgz` asset; GitHub's generated source archives require a separate build.
+Download `shopify-product-search-0.1.0.tgz` and `SHA256SUMS` from the same versioned [GitHub Release](https://github.com/tim-schultz/shopify-mcp/releases). Select the attached `.tgz` asset; GitHub's generated source archives require a separate build.
 
 Verify and install the downloaded package:
 
@@ -166,7 +166,7 @@ CI runs this release verification on Node 22 and 24. Build dependencies are fetc
 
 To distribute through GitHub:
 
-1. Create the GitHub repository, connect `origin`, and push this source to its default branch.
+1. Connect `origin` to `https://github.com/tim-schultz/shopify-mcp.git` and push this source to its default branch.
 2. Commit the intended version in `package.json` and `package-lock.json`, then create and push the matching tag, for example `v0.1.0`.
 3. In Actions, run **Prepare tarball release** with that existing tag. The workflow checks that the tag matches the package version, builds and verifies the tarball, and creates a **draft** release containing the tarball and checksum.
 4. Review the draft's source commit, files and installation notes, then publish it in GitHub.

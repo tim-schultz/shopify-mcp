@@ -5,6 +5,9 @@
   "description": "Discover Shopify sellers and search verified storefront MCP catalogs from an agent-friendly CLI.",
   "type": "module",
   "license": "MIT",
+  "repository": { "type": "git", "url": "git+https://github.com/tim-schultz/shopify-mcp.git" },
+  "homepage": "https://github.com/tim-schultz/shopify-mcp#readme",
+  "bugs": { "url": "https://github.com/tim-schultz/shopify-mcp/issues" },
   "engines": { "node": ">=22" },
   "bin": { "shop-search": "./dist/bin.js" },
   "exports": {
