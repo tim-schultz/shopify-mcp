@@ -1,0 +1,5 @@
+export { search, getProduct, metadataReceipt, parseSelections, variantMatches } from './catalog.js'
+export { CatalogError, HttpTransport, McpClient } from './transport.js'
+export { DEFAULT_PROFILE, GLOBAL_ENDPOINT, searchOptions, productOptions, searchResultSchema, productResultSchema } from './schemas.js'
+export type { MarketOptions, SearchOptions, SearchResult, Selection, Product, Seller, Store, Receipt } from './schemas.js'
+export type { Transport } from './transport.js'
