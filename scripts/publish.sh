@@ -9,7 +9,7 @@ for executable in git gh node; do
   command -v "$executable" >/dev/null || { echo "Required on host: $executable" >&2; exit 1; }
 done
 
-expected_remote='https://github.com/tim-schultz/shopify-mcp.git'
+expected_remote='git@github.com:tim-schultz/shopify-mcp.git'
 repository='tim-schultz/shopify-mcp'
 if [[ "$(git remote get-url origin)" != "$expected_remote" ]]; then
   echo "origin must be $expected_remote" >&2
@@ -33,8 +33,10 @@ if git rev-parse --verify --quiet "refs/tags/$tag" >/dev/null; then
   fi
 fi
 
-# Confirm GitHub authentication before the first write. Never print credentials.
+# Git pushes use the host's SSH key/agent. gh API auth only dispatches the release.
+# Confirm both before the first write. Never read or print private key contents.
 gh auth status >/dev/null 2>&1 || { echo 'Run gh auth login on the host first.' >&2; exit 1; }
+git ls-remote origin >/dev/null
 git push -u origin main
 if ! git rev-parse --verify --quiet "refs/tags/$tag" >/dev/null; then
   git tag "$tag" "$commit"
