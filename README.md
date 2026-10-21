@@ -4,6 +4,24 @@ A TypeScript CLI built with [Incur](https://github.com/wevm/incur) for finding p
 
 The search discovers sellers through Shopify's Global Catalog, verifies each seller's native MCP endpoint, then searches that seller directly. It needs Node.js 22+ and HTTPS access. Anonymous catalog reads currently require no API key. Shopify's availability, eligibility and rate limits still apply.
 
+## Install a release
+
+Download `shopify-product-search-0.1.0.tgz` and `SHA256SUMS` from the same versioned GitHub Release. Select the attached `.tgz` asset; GitHub's generated source archives require a separate build.
+
+Verify and install the downloaded package:
+
+```sh
+shasum -a 256 -c SHA256SUMS
+npm install --global --offline --ignore-scripts ./shopify-product-search-0.1.0.tgz
+shop-search --help
+```
+
+On Linux, `sha256sum --check SHA256SUMS` also works. In PowerShell, compare `(Get-FileHash ./shopify-product-search-0.1.0.tgz -Algorithm SHA256).Hash` with the hash in `SHA256SUMS` before installing.
+
+The tarball contains compiled JavaScript, the skill files, and all runtime dependencies. Installation needs Node.js 22+ and npm, but no registry access, dependency downloads, lifecycle scripts, build tools, or npm account. Product searches require HTTPS access after installation.
+
+Releases are distributed through GitHub, and `private: true` prevents npm registry publication. Use the versioned tarball rather than installing this package by its registry name.
+
 ## Run from source
 
 ```sh
@@ -19,8 +37,6 @@ To install the local package and expose `shop-search` on your PATH:
 npm install --global .
 shop-search --help
 ```
-
-The package is prepared for publication; this repository does not imply an existing npm release. Until the maintainer publishes it, install from a checkout or a packed tarball rather than fetching an unverified package by name.
 
 ## Use from an agent
 
@@ -55,7 +71,7 @@ For MCP clients, configure this stdio command:
 }
 ```
 
-Alternatively, run `shop-search mcp add` to register it through Incur. Supported configuration formats vary by client. The MCP server exposes only `search` and `product`, with read-only catalog annotations.
+Alternatively, run `shop-search mcp add` to register it through Incur. Registration uses the installed `shop-search --mcp` command. Incur's registration helper may require network access; the manual configuration above uses the installed CLI directly. Supported configuration formats vary by client. The MCP server exposes only `search` and `product`, with read-only catalog annotations.
 
 ## Verify a size or other option
 
@@ -98,6 +114,8 @@ Exit code `0` means at least one storefront search completed, including searches
 
 ## JavaScript API
 
+For library use, install the verified tarball into the consuming project with `npm install --offline --ignore-scripts ./shopify-product-search-0.1.0.tgz`.
+
 The root export has no CLI startup side effects:
 
 ```ts
@@ -127,18 +145,32 @@ Live product responses and images must not be cached, committed, or reused as a 
 
 Protocol details and primary Shopify sources are in [references/protocol.md](references/protocol.md).
 
-## Develop and publish
+## Develop and prepare a release
 
 ```sh
 npm ci
-npm run check
-npm test
-npm run build
-npm pack
+npm run release:pack
 ```
 
-CI runs offline checks on Node 22 and 24. `npm pack` runs checks, tests and the build, then creates `shopify-product-search-0.1.0.tgz`. Install it with `npm install --global ./shopify-product-search-0.1.0.tgz`.
+`release:pack` runs the typecheck, synthetic tests and build, then bundles the locked runtime dependencies into the tarball. It installs that tarball with an empty cache, offline mode and lifecycle scripts disabled. It checks the compiled CLI, manifest, schemas, library exports, included skill files and the MCP tool listing. No live catalog requests run during packaging.
 
-When creating the remote repository, set `repository`, `homepage` and `bugs` in `package.json` to its actual URL. Confirm ownership/availability of the npm package name, then publish the reviewed package with `npm publish --access public`. No release or remote publication happens automatically.
+The generated files are:
+
+```text
+release/shopify-product-search-0.1.0.tgz
+release/SHA256SUMS
+release/RELEASE_NOTES.md
+```
+
+CI runs this release verification on Node 22 and 24. Build dependencies are fetched when running `npm ci`; recipient installation of the bundled tarball is offline.
+
+To distribute through GitHub:
+
+1. Create the GitHub repository, connect `origin`, and push this source to its default branch.
+2. Commit the intended version in `package.json` and `package-lock.json`, then create and push the matching tag, for example `v0.1.0`.
+3. In Actions, run **Prepare tarball release** with that existing tag. The workflow checks that the tag matches the package version, builds and verifies the tarball, and creates a **draft** release containing the tarball and checksum.
+4. Review the draft's source commit, files and installation notes, then publish it in GitHub.
+
+The workflow must exist on the default branch to appear in the Actions UI. It uses the repository's GitHub token and does not need an npm token. It does not overwrite an existing release or publish automatically on push. The checksum lets recipients verify file integrity; it should be obtained from the trusted release page alongside the package.
 
 MIT licensed. This is an independent project, unaffiliated with Shopify.

@@ -5,7 +5,7 @@ description: Find and compare products across Shopify storefronts by discovering
 
 # Shopify Product Search
 
-Use the `shop-search` TypeScript CLI to find current products from multiple merchants. It requires Node.js 22+ and HTTPS access. If the CLI is unavailable, build this repository with `npm ci && npm run build`, then invoke `node <repository>/dist/bin.js` instead. Resolve that path against the installed skill/repository, not an unrelated working directory. See [README.md](README.md) for installation.
+Use the `shop-search` TypeScript CLI to find current products from multiple merchants. It requires Node.js 22+ and HTTPS access for searches. Install a versioned GitHub Release tarball using the checksum and offline-install instructions in [README.md](README.md); no npm registry publication or package-name lookup is needed. If the package is already unpacked, invoke `node <package>/dist/bin.js` directly. A source checkout needs `npm ci` and `npm run build` first. Resolve paths against the actual installed package/repository, not an unrelated working directory.
 
 ## Find products
 

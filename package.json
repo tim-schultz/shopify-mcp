@@ -1,6 +1,7 @@
 {
   "name": "shopify-product-search",
   "version": "0.1.0",
+  "private": true,
   "description": "Discover Shopify sellers and search verified storefront MCP catalogs from an agent-friendly CLI.",
   "type": "module",
   "license": "MIT",
@@ -16,9 +17,11 @@
     "build": "tsc -p tsconfig.build.json",
     "check": "tsc --noEmit",
     "test": "node --import tsx --test test/*.test.ts",
+    "release:pack": "node scripts/release.mjs",
     "prepack": "npm run check && npm test && npm run build"
   },
   "dependencies": { "incur": "0.7.1" },
+  "bundleDependencies": ["incur"],
   "devDependencies": { "@types/node": "^22.0.0", "tsx": "^4.0.0", "typescript": "^5.9.0" },
   "keywords": ["shopify", "mcp", "ucp", "incur", "agent-skills", "shopping", "cli"]
 }
