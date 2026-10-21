@@ -173,4 +173,6 @@ To distribute through GitHub:
 
 The workflow must exist on the default branch to appear in the Actions UI. It uses the repository's GitHub token and does not need an npm token. It does not overwrite an existing release or publish automatically on push. The checksum lets recipients verify file integrity; it should be obtained from the trusted release page alongside the package.
 
+For the initial push from a host with Git, Node.js and an authenticated GitHub CLI, run `bash scripts/publish.sh`. It verifies the clean `main` branch and expected remote, pushes source and the matching version tag without force, and starts the draft-release workflow. It preserves existing commit author metadata and leaves publishing the draft to the maintainer.
+
 MIT licensed. This is an independent project, unaffiliated with Shopify.
